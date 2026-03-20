@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS CC ELITE - Premium Free Fire Service | AMEX Cards & QR Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff00;
+            --secondary: #ff006e;
+            --tertiary: #00ffff;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --amex-blue: #006fcf;
+            --bg-dark: #0a0e27;
+            --bg-darker: #050814;
+            --premium: #1a1a3e;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--premium) 50%, var(--bg-darker) 100%);
+            color: var(--primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ===== BACKGROUND EFFECTS ===== */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        @keyframes matrix-rain {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .matrix-char {
+            position: absolute;
+            color: var(--primary);
+            opacity: 0.08;
+            font-size: 20px;
+            animation: matrix-rain linear infinite;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.03),
+                rgba(0, 255, 0, 0.03) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            animation: scanlines 8s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        @keyframes float-orb {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-30px) translateX(20px); }
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(40px);
+            z-index: 0;
+            animation: float-orb 8s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 255, 0, 0.15);
+            top: 10%;
+            left: 10%;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 0, 110, 0.1);
+            top: 50%;
+            right: 5%;
+            animation-delay: 3s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: rgba(0, 255, 255, 0.08);
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 5s;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            box-shadow: 0 0 10px var(--primary);
+            z-index: 9999;
+        }
+
+        .cursor::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .container {
+            position: relative;
+            z-index: 3;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--primary);
+            margin-bottom: 50px;
+            animation: slideDown 0.8s ease-out;
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.3);
+            position: relative;
+            z-index: 100;
+            background: rgba(10, 14, 39, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            text-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary), 0 0 60px var(--gold);
+            animation: pulse-premium 2s ease-in-out infinite;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse-premium {
+            0%, 100% { 
+                text-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary);
+                transform: scale(1);
+            }
+            50% { 
+                text-shadow: 0 0 30px var(--primary), 0 0 50px var(--secondary), 0 0 80px var(--gold);
+                transform: scale(1.05);
+            }
+        }
+
+        .premium-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(45deg, var(--gold), var(--silver));
+            color: #000;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 15px;
+            animation: badge-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes badge-glow {
+            0%, 100% { box-shadow: 0 0 10px var(--gold); }
+            50% { box-shadow: 0 0 20px var(--gold), 0 0 30px var(--secondary); }
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after { width: 100%; }
+        nav a:hover {
+            text-shadow: 0 0 15px var(--secondary);
+            color: var(--gold);
+        }
+
+        .cart-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 8px var(--gold));
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: black;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.2) rotate(15deg);
+            filter: drop-shadow(0 0 15px var(--gold));
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            text-align: center;
+            margin: 100px 0;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--gold), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glitch 0.3s infinite;
+            letter-spacing: 3px;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.5));
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--tertiary);
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px var(--tertiary);
+            letter-spacing: 1px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 50px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary), var(--primary));
+            color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid var(--gold);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 14px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.2);
+            animation: slideIn 1.2s ease-out;
+            letter-spacing: 2px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .cta-btn:hover {
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 0, 110, 0.8), inset 0 0 30px rgba(255, 215, 0, 0.3);
+            transform: scale(1.08);
+        }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title {
+            font-size: 48px;
+            margin: 50px 0 50px 0;
+            text-align: center;
+            background: linear-gradient(45deg, var(--gold), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 20px;
+            animation: titleGlow 2s ease-in-out infinite;
+            letter-spacing: 2px;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--gold)); }
+            50% { filter: drop-shadow(0 0 30px var(--gold)) drop-shadow(0 0 40px var(--secondary)); }
+        }
+
+        /* ===== QR UPLOAD SECTION ===== */
+        .qr-upload-section {
+            background: rgba(26, 26, 62, 0.4);
+            backdrop-filter: blur(20px);
+            border: 3px dashed var(--gold);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .qr-upload-section h3 {
+            color: var(--gold);
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--gold);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--gold);
+            padding: 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0, 255, 0, 0.03);
+        }
+
+        .upload-area:hover {
+            background: rgba(0, 255, 0, 0.08);
+            border-color: var(--secondary);
+            transform: scale(1.02);
+        }
+
+        .upload-area.dragover {
+            background: rgba(255, 0, 110, 0.15);
+            border-color: var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .upload-area p {
+            color: var(--primary);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        #qrFileInput {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: #000;
+            border: 2px solid var(--gold);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            border-radius: 8px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .upload-btn:hover {
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        .qr-preview {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .qr-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .qr-status {
+            color: var(--primary);
+            margin-top: 15px;
+            font-size: 14px;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .qr-status.success {
+            color: var(--primary);
+        }
+
+        /* ===== AMEX CARDS SECTION ===== */
+        .cards-section {
+            margin: 80px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 50px 0;
+        }
+
+        .amex-card {
+            perspective: 1000px;
+            height: 250px;
+            cursor: pointer;
+            animation: cardSlideIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .amex-card:nth-child(1) { animation-delay: 0.1s; }
+        .amex-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .amex-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 111, 207, 0.4);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--amex-blue) 0%, #004fa3 100%);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            color: white;
+            font-weight: bold;
+        }
+
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 0, 0.05) 0%, transparent 50%);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #004fa3 0%, var(--amex-blue) 100%);
+            transform: rotateY(180deg);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            color: white;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .amex-logo {
+            font-size: 32px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .card-number {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-holder-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 12px;
+        }
+
+        .card-holder-name {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-expiry {
+            text-align: right;
+        }
+
+        .card-cvv {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .card-details {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .card-balance {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--gold);
+            text-shadow: 0 0 8px var(--gold);
+        }
+
+        .card-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            margin: 10px 0;
+        }
+
+        .card-limit {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: #000;
+            border: 2px solid var(--gold);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            border-radius: 8px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            z-index: 50;
+        }
+
+        .buy-btn:hover {
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 0, 110, 0.6);
+            transform: scale(1.05);
+        }
+
+        .buy-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ===== PRODUCTS SECTION ===== */
+        .products {
+            margin: 100px 0;
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: rgba(26, 26, 62, 0.4);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+            animation: cardSlideIn 0.8s ease-out forwards;
+            opacity: 0;
+            border-radius: 15px;
+            box-shadow: 
+                0 8px 32px rgba(31, 38, 135, 0.37),
+                inset 0 0 20px rgba(255, 215, 0, 0.05);
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            animation: shimmer 3s infinite;
+            transform: rotate(45deg);
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+            transition: left 0.5s;
+        }
+
+        .product-card:hover::after { left: 100%; }
+
+        .product-card:hover {
+            border-color: var(--gold);
+            box-shadow: 
+                0 20px 60px rgba(255, 215, 0, 0.4),
+                inset 0 0 30px rgba(255, 215, 0, 0.15),
+                0 0 50px rgba(255, 0, 110, 0.3);
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(26, 26, 62, 0.6);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            padding: 8px 20px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: #000;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            animation: badgeBounce 2s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--gold);
+            z-index: 10;
+        }
+
+        @keyframes badgeBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .product-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+            animation: iconBounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px var(--gold));
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .product-card:hover .product-icon {
+            animation: spin 0.6s linear;
+            filter: drop-shadow(0 0 20px var(--gold)) drop-shadow(0 0 30px var(--secondary));
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .product-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold);
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .price-tag {
+            font-size: 12px;
+            color: var(--secondary);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: #000;
+            border: 2px solid var(--gold);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .add-to-cart-btn:hover {
+            background: linear-gradient(45deg, var(--secondary), var(--gold));
+            box-shadow: 0 0 40px var(--gold), 0 0 60px var(--secondary);
+            transform: scale(1.05);
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features {
+            margin: 100px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-box {
+            background: rgba(26, 26, 62, 0.4);
+            backdrop-filter: blur(20px);
+            border-left: 6px solid var(--gold);
+            padding: 30px;
+            transition: all 0.3s;
+            animation: featureSlide 0.8s ease-out forwards;
+            opacity: 0;
+            border-radius: 10px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        @keyframes featureSlide {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .feature-box:nth-child(1) { animation-delay: 0.1s; }
+        .feature-box:nth-child(2) { animation-delay: 0.2s; }
+        .feature-box:nth-child(3) { animation-delay: 0.3s; }
+
+        .feature-box:hover {
+            border-left-color: var(--secondary);
+            background: rgba(26, 26, 62, 0.7);
+            transform: translateX(15px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        .feature-title {
+            color: var(--gold);
+            font-size: 20px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 15px var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .feature-text {
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        /* ===== TESTIMONIALS SECTION ===== */
+        .testimonials {
+            margin: 100px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: rgba(26, 26, 62, 0.4);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 30px;
+            animation: testimonialSlide 0.8s ease-out forwards;
+            opacity: 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes testimonialSlide {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
+        .testimonial-card:nth-child(2) { animation-delay: 0.2s; }
+        .testimonial-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -40px;
+            right: -20px;
+            font-size: 120px;
+            color: var(--gold);
+            opacity: 0.1;
+            font-weight: bold;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--gold);
+            background: rgba(26, 26, 62, 0.6);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(255, 215, 0, 0.3);
+        }
+
+        .stars {
+            color: var(--gold);
+            margin-bottom: 15px;
+            font-size: 18px;
+            letter-spacing: 3px;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            margin-bottom: 15px;
+            color: var(--tertiary);
+            font-style: italic;
+            text-shadow: 0 0 8px var(--tertiary);
+        }
+
+        .testimonial-author {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        /* ===== QR CODE MODAL ===== */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-content {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--premium) 100%);
+            border: 3px solid var(--gold);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(255, 215, 0, 0.5);
+            animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 500px;
+            position: relative;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) rotateX(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotateX(0deg);
+            }
+        }
+
+        .qr-header {
+            color: var(--gold);
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--gold);
+            letter-spacing: 2px;
+        }
+
+        .qr-subtitle {
+            color: var(--tertiary);
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px var(--tertiary);
+        }
+
+        .qr-image-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .qr-image-container img {
+            max-width: 350px;
+            max-height: 350px;
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .qr-timer {
+            color: var(--secondary);
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-shadow: 0 0 10px var(--secondary);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .qr-amount {
+            color: var(--primary);
+            font-size: 20px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .qr-close-hint {
+            color: var(--primary);
+            font-size: 12px;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        /* ===== SHOPPING CART MODAL ===== */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .cart-content {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 450px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--premium) 100%);
+            border-left: 3px solid var(--gold);
+            box-shadow: -10px 0 80px rgba(255, 215, 0, 0.4);
+            animation: slideFromRight 0.3s ease-out;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes slideFromRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .cart-header {
+            padding: 25px;
+            border-bottom: 3px solid var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 26, 62, 0.5);
+        }
+
+        .cart-header h2 {
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold);
+            letter-spacing: 2px;
+        }
+
+        .cart-close {
+            cursor: pointer;
+            font-size: 28px;
+            color: var(--gold);
+            transition: all 0.3s;
+        }
+
+        .cart-close:hover {
+            color: var(--secondary);
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            background: rgba(0, 255, 0, 0.03);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            padding: 18px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .cart-item:hover {
+            border-color: var(--gold);
+            background: rgba(255, 215, 0, 0.08);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        .cart-item-price {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+
+        .remove-btn {
+            background: linear-gradient(45deg, var(--secondary), #ff0055);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            border-radius: 5px;
+            font-size: 12px;
+            box-shadow: 0 0 15px rgba(255, 0, 110, 0.3);
+        }
+
+        .remove-btn:hover {
+            background: linear-gradient(45deg, #ff0055, var(--secondary));
+            box-shadow: 0 0 25px rgba(255, 0, 110, 0.6);
+            transform: scale(1.1);
+        }
+
+        .cart-footer {
+            padding: 25px;
+            border-top: 3px solid var(--gold);
+            background: rgba(26, 26, 62, 0.5);
+        }
+
+        .cart-total {
+            color: var(--gold);
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 18px;
+            text-align: right;
+            text-shadow: 0 0 15px var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: #000;
+            border: 2px solid var(--gold);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .checkout-btn:hover {
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8), 0 0 70px rgba(255, 0, 110, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact {
+            margin: 100px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .contact-info {
+            animation: slideIn 0.8s ease-out;
+            background: rgba(26, 26, 62, 0.4);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .contact-info h3 {
+            color: var(--gold);
+            margin-bottom: 25px;
+            font-size: 22px;
+            text-shadow: 0 0 15px var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .contact-info p {
+            color: var(--primary);
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .contact-link {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-shadow: 0 0 8px var(--secondary);
+        }
+
+        .contact-link:hover {
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold);
+        }
+
+        .contact-form {
+            animation: slideIn 0.8s ease-out;
+            animation-delay: 0.2s;
+            background: rgba(26, 26, 62, 0.4);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 255, 0, 0.05);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            color: var(--primary);
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            resize: vertical;
+            border-radius: 8px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            box-shadow: 0 0 20px var(--gold), inset 0 0 10px rgba(255, 215, 0, 0.1);
+            background: rgba(0, 255, 0, 0.08);
+            border-color: var(--gold);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: #000;
+            border: 2px solid var(--gold);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 0 45px rgba(255, 215, 0, 0.8);
+            transform: scale(1.02);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 3px solid var(--gold);
+            padding: 40px 0;
+            margin-top: 100px;
+            text-align: center;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            animation: slideUp 0.8s ease-out;
+            background: rgba(26, 26, 62, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-links {
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 20px;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+            text-shadow: 0 0 15px var(--gold);
+        }
+
+        /* ===== NOTIFICATIONS ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--gold), var(--secondary));
+            color: black;
+            padding: 18px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            z-index: 5000;
+            animation: slideInRight 0.3s ease-out;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            letter-spacing: 1px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 48px; }
+            .section-title { font-size: 36px; }
+            header { flex-direction: column; gap: 20px; }
+            .header-right { gap: 15px; }
+            .products-grid { grid-template-columns: 1fr; }
+            .cards-container { grid-template-columns: 1fr; }
+            .cart-content { width: 100%; }
+            .contact-content { grid-template-columns: 1fr; gap: 30px; }
+            .qr-content { padding: 25px; max-width: 90%; }
+        }
+
+        @media (max-width: 480px) {
+            header { padding: 15px; }
+            .logo { font-size: 22px; }
+            .hero h1 { font-size: 36px; }
+            .product-card { padding: 20px; }
+            nav a { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Background Effects -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    <div class="scanlines"></div>
+    <div class="cursor" id="cursor"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div>
+                <span class="logo">⚡ NEXUS CC ELITE</span>
+                <span class="premium-badge">💎 PREMIUM</span>
+            </div>
+            <div class="header-right">
+                <nav>
+                    <a href="#home">Home</a>
+                    <a href="#qr-upload">QR</a>
+                    <a href="#cards">Cards</a>
+                    <a href="#products">Shop</a>
+                    <a href="#features">Features</a>
+                    <a href="#testimonials">Reviews</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <h1>NEXUS ELITE</h1>
+            <p>🔓 Premium Free Fire Cosmetics & AMEX Payment Cards - Worldwide Service</p>
+            <button class="cta-btn" onclick="document.getElementById('qr-upload').scrollIntoView({behavior: 'smooth'})">>>> START UPLOAD QR</button>
+        </section>
+
+        <!-- QR UPLOAD SECTION -->
+        <section class="qr-upload-section" id="qr-upload">
+            <h3>📱 UPLOAD YOUR PAYMENT QR CODE</h3>
+            <p style="color: var(--tertiary); margin-bottom: 20px; font-size: 14px;">Upload your UPI/Payment QR code image below - This will be displayed when customers click BUY NOW</p>
+            
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('qrFileInput').click()">
+                <p>📸 Click to upload or drag & drop your QR code</p>
+                <p style="font-size: 12px; opacity: 0.7;">Supported formats: JPG, PNG (Max 5MB)</p>
+            </div>
+            <input type="file" id="qrFileInput" accept="image/*" />
+            
+            <div class="qr-preview" id="qrPreview">
+                <img id="qrPreviewImg" src="" alt="QR Preview" />
+                <div class="qr-status success">✅ QR Code loaded successfully!</div>
+            </div>
+            
+            <button class="upload-btn" onclick="uploadQR()">>>> CONFIRM QR CODE</button>
+        </section>
+
+        <!-- AMEX Cards Section -->
+        <section class="cards-section" id="cards">
+            <h2 class="section-title">💎 PREMIUM AMEX CARDS</h2>
+            <div class="cards-container">
+                <!-- Card 1: Standard 2000 RS -->
+                <div class="amex-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="amex-logo">🛡️ AMEX</div>
+                            <div>
+                                <div class="card-title">STANDARD CARD</div>
+                                <div class="card-number">•••• •••• •••• 4532</div>
+                                <div class="card-limit">Balance Limit: up to $200 USD</div>
+                                <div class="card-holder-info">
+                                    <div class="card-holder-name">NEXUS ELITE</div>
+                                    <div class="card-expiry">12/25</div>
+                                </div>
+                            </div>
+                            <button class="buy-btn" onclick="showQRCode(2000, 'STANDARD')">>>> BUY NOW - ₹2,000</button>
+                        </div>
+                        <div class="card-back">
+                            <div style="width: 100%; text-align: center;">
+                                <div style="background: black; height: 50px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; letter-spacing: 2px;">
+                                    CVV: 123
+                                </div>
+                                <div class="card-details">
+                                    <p><strong>CARD TYPE:</strong> AMEX Gold</p>
+                                    <p><strong>STATUS:</strong> Active</p>
+                                    <p class="card-balance">BALANCE: ₹2,000 (~$24 USD)</p>
+                                    <p><strong>SECURITY:</strong> SSL Verified ✓</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Premium 5000 RS -->
+                <div class="amex-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="amex-logo">💎 AMEX PREMIUM</div>
+                            <div>
+                                <div class="card-title">PREMIUM CARD</div>
+                                <div class="card-number">•••• •••• •••• 7890</div>
+                                <div class="card-limit">Balance Limit: up to $250 USD</div>
+                                <div class="card-holder-info">
+                                    <div class="card-holder-name">VIP MEMBER</div>
+                                    <div class="card-expiry">12/27</div>
+                                </div>
+                            </div>
+                            <button class="buy-btn" onclick="showQRCode(5000, 'PREMIUM')">>>> BUY NOW - ₹5,000</button>
+                        </div>
+                        <div class="card-back">
+                            <div style="width: 100%; text-align: center;">
+                                <div style="background: linear-gradient(45deg, var(--gold), var(--secondary)); height: 50px; margin-bottom: 15px; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: black; font-weight: bold; letter-spacing: 2px;">
+                                    CVV: 456
+                                </div>
+                                <div class="card-details">
+                                    <p><strong>CARD TYPE:</strong> AMEX Platinum</p>
+                                    <p><strong>STATUS:</strong> Premium Active</p>
+                                    <p class="card-balance">BALANCE: ₹5,000 (~$60 USD)</p>
+                                    <p><strong>SECURITY:</strong> 2FA Enabled ✓</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products" id="products">
+            <h2 class="section-title">💰</h2>
+            <div class="products-grid" id="productsGrid"></div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <h2 class="section-title">🏆 PREMIUM BENEFITS</h2>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-title">⚡ INSTANT DELIVERY</div>
+                    <div class="feature-text">Applied to your account within 30 seconds of payment confirmation</div>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-title">🛡️ 100% SECURE</div>
+                    <div class="feature-text">SSL encryption, 2FA support & dedicated account protection team</div>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-title">💎 VIP SUPPORT</div>
+                    <div class="feature-text">24/7 premium customer service with < 2 minute response time</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials" id="testimonials">
+            <h2 class="section-title">⭐ ELITE REVIEWS</h2>
+            <div class="testimonials-grid" id="testimonialsGrid"></div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <h2 class="section-title">📞 PREMIUM SUPPORT</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>📍 Contact Details</h3>
+                    <p><strong>📧 Email:</strong> <a href="mailto:elite@nexuscc.com" class="contact-link">elite@nexuscc.com</a></p>
+                    <p><strong>💬 Discord:</strong> <a href="#" class="contact-link">NEXUS ELITE Server</a></p>
+                    <p><strong>✈️ Telegram:</strong> <a href="#" class="contact-link">@nexuscc_elite</a></p>
+                    <p><strong>⏰ Hours:</strong> 24/7 Live Support</p>
+                    <p><strong>⚡ Response:</strong> < 2 minutes guaranteed</p>
+                </div>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Free Fire IGN</label>
+                        <input type="text" id="name" name="name" placeholder="Your in-game name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Tell us what you need..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">>> SEND MESSAGE</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Refund Policy</a>
+                <a href="#">FAQ</a>
+            </div>
+            <p>&copy; 2026 NEXUS ELITE CC | Premium Free Fire Service Provider</p>
+            <p style="font-size: 12px; color: var(--gold); margin-top: 10px;">[ PREMIUM_ACTIVE ] [ SECURITY_VERIFIED ] [ ZERO_BANS_GUARANTEE ]</p>
+        </footer>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-content">
+            <div class="qr-header">🔐 PAYMENT QR CODE</div>
+            <div class="qr-subtitle">Scan with your payment app to complete payment</div>
+            <div class="qr-amount" id="qrAmount">Amount: ₹2,000</div>
+            <div class="qr-image-container">
+                <img id="qrcodeDisplay" src="" alt="QR Code" />
+            </div>
+            <div class="qr-timer">⏱️ Expires in: <span id="timerCount">120</span>s</div>
+            <div class="qr-close-hint">Click outside or wait for expiration to close</div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>PREMIUM CART</h2>
+                <span class="cart-close" onclick="toggleCart()">✕</span>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-footer">
+                <div class="cart-total">TOTAL: ₹<span id="cartTotal">0</span></div>
+                <button class="checkout-btn" onclick="checkout()">>>> PROCESS PAYMENT NOW</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedQRImage = null;
+        let qrTimer = null;
+
+        // Premium Products Data with INR
+        const products = [
+            {
+                id: 1,
+                name: 'LEGENDARY SKIN',
+                icon: '👑',
+                price: 499,
+                oldPrice: 699
+            },
+            {
+                id: 2,
+                name: 'MYSTIC WEAPON',
+                icon: '⚔️',
+                price: 299,
+                oldPrice: 499
+            },
+            {
+                id: 3,
+                name: 'DELUXE BUNDLE',
+                icon: '🎁',
+                price: 799,
+                oldPrice: 1299
+            },
+            {
+                id: 4,
+                name: 'ELITE PASS',
+                icon: '🏆',
+                price: 1299,
+                oldPrice: 1999
+            },
+            {
+                id: 5,
+                name: 'PLATINUM EMOTES',
+                icon: '💎',
+                price: 249,
+                oldPrice: 499
+            },
+            {
+                id: 6,
+                name: 'MYSTERY BOX',
+                icon: '🎲',
+                price: 199,
+                oldPrice: 399
+            }
+        ];
+
+        const testimonials = [
+            {
+                text: 'Best premium service ever! Got everything instantly. Absolutely worth it!',
+                author: 'ElitePlayer#001',
+                stars: 5
+            },
+            {
+                text: 'Premium support is incredible. They solved my issue in under 2 minutes!',
+                author: 'ProGamer#FF',
+                stars: 5
+            },
+            {
+                text: 'Using NEXUS for months now. Zero issues, amazing prices, highly recommend!',
+                author: 'VIPMember#2026',
+                stars: 5
+            }
+        ];
+
+        let cart = [];
+
+        // Matrix Animation
+        function createMatrixChar() {
+            const chars = '01अइउएओकखगघचछजझञटठडढणतथदधनपफबभमयरलवशषसह';
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            const matrixBg = document.getElementById('matrixBg');
+            const div = document.createElement('div');
+            div.className = 'matrix-char';
+            div.textContent = char;
+            div.style.left = Math.random() * 100 + '%';
+            div.style.top = '-50px';
+            div.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            matrixBg.appendChild(div);
+            setTimeout(() => div.remove(), 15000);
+        }
+        setInterval(createMatrixChar, 300);
+
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        // QR FILE UPLOAD HANDLING
+        const uploadArea = document.getElementById('uploadArea');
+        const qrFileInput = document.getElementById('qrFileInput');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleQRUpload(files[0]);
+            }
+        });
+
+        qrFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleQRUpload(e.target.files[0]);
+            }
+        });
+
+        function handleQRUpload(file) {
+            if (!file.type.startsWith('image/')) {
+                showNotification('❌ Please upload an image file');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('❌ File size must be less than 5MB');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedQRImage = e.target.result;
+                document.getElementById('qrPreviewImg').src = uploadedQRImage;
+                document.getElementById('qrPreview').style.display = 'block';
+                showNotification('✅ QR image loaded! Click confirm to save');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function uploadQR() {
+            if (!uploadedQRImage) {
+                showNotification('❌ Please upload a QR code image first');
+                return;
+            }
+            showNotification('✅ QR code set successfully! Ready for payment');
+        }
+
+        // Show QR Code
+        function showQRCode(amount, cardType) {
+            if (!uploadedQRImage) {
+                showNotification('⚠️ Please upload QR code in the QR section first');
+                return;
+            }
+
+            const modal = document.getElementById('qrModal');
+            const qrcodeDisplay = document.getElementById('qrcodeDisplay');
+            
+            qrcodeDisplay.src = uploadedQRImage;
+            
+            document.getElementById('qrAmount').textContent = `Amount: ₹${amount}`;
+            modal.style.display = 'flex';
+            
+            startQRTimer();
+            showNotification(`💳 QR Code displayed for ₹${amount} ${cardType} card!`);
+        }
+
+        function startQRTimer() {
+            let timeLeft = 120;
+            document.getElementById('timerCount').textContent = timeLeft;
+            
+            if (qrTimer) clearInterval(qrTimer);
+            
+            qrTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timerCount').textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(qrTimer);
+                    closeQRModal();
+                }
+            }, 1000);
+        }
+
+        function closeQRModal() {
+            const modal = document.getElementById('qrModal');
+            modal.style.display = 'none';
+            if (qrTimer) clearInterval(qrTimer);
+            showNotification('✅ QR Code expired! Payment window closed');
+        }
+
+        document.getElementById('qrModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQRModal();
+            }
+        });
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-badge">💎 LIMITED</div>
+                    <div class="product-icon">${product.icon}</div>
+                    <div class="product-name">${product.name}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <div class="product-price">₹${product.price}</div>
+                        <span class="price-tag">₹${product.oldPrice}</span>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(${product.id})">>>> ADD TO CART</button>
+                </div>
+            `).join('');
+        }
+
+        // Render Testimonials
+        function renderTestimonials() {
+            const grid = document.getElementById('testimonialsGrid');
+            grid.innerHTML = testimonials.map(testimonial => `
+                <div class="testimonial-card">
+                    <div class="stars">${'⭐'.repeat(testimonial.stars)}</div>
+                    <div class="testimonial-text">"${testimonial.text}"</div>
+                    <div class="testimonial-author">- ${testimonial.author}</div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            updateCart();
+            showNotification(`${product.name} added to premium cart!`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            document.getElementById('cartCount').textContent = cart.length;
+            renderCartItems();
+            updateCartTotal();
+        }
+
+        function renderCartItems() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = '<p style="text-align: center; color: var(--gold); padding: 40px 20px; font-size: 14px;">Your premium cart is empty</p>';
+                return;
+            }
+            cartItemsDiv.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">₹${item.price}</div>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function updateCartTotal() {
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cartTotal').textContent = total;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your premium cart is empty!');
+                return;
+            }
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            alert(`💳 Processing premium payment: ₹${total}\n\n✅ Thank you for your premium purchase!\n📧 Check your email for order confirmation & delivery details.`);
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            showNotification(`✅ Message received! Our elite support will contact you soon.`);
+            event.target.reset();
+        }
+
+        function showNotification(text) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = text;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            renderProducts();
+            renderTestimonials();
+            updateCart();
+        });
+    </script>
+</body>
+</html>
